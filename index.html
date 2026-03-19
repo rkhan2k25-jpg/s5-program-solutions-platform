@@ -1,18 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>S5 Program Solutions Inc.</title>
-</head>
-<body>
-  <h1>S5 Program Solutions Inc.</h1>
-  <p>Enterprise Program Delivery Advisory</p>
+<form id="form">
+  <input name="company" placeholder="Company Name" required />
+  <input name="contact" placeholder="Contact Name" required />
+  <input name="email" placeholder="Email" required />
+  <button type="submit">Submit</button>
+</form>
 
-  <form>
-    <input placeholder="Company Name" />
-    <input placeholder="Contact Name" />
-    <input placeholder="Email" />
-    <button>Submit</button>
-  </form>
+<p id="msg"></p>
 
-</body>
-</html>
+<script>
+document.getElementById("form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const data = Object.fromEntries(new FormData(e.target));
+
+  const res = await fetch("/api/intake", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (res.ok) {
+    document.getElementById("msg").innerText = "Submitted successfully!";
+  } else {
+    document.getElementById("msg").innerText = "Error submitting form.";
+  }
+});
+</script>
